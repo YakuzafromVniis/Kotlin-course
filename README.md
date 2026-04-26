@@ -1,40 +1,26 @@
-This is a Kotlin Multiplatform project targeting Android, Desktop (JVM).
+Этот проект — результат глубокого погружения в Kotlin Multiplatform (Android & Desktop). Скажу честно: путь был непростым, проект получился местами запутанным, а в коде до сих пор можно встретить "шрамы" от былых багов. 
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+###  Особенности проекта
+* **Творческий хаос:** Архитектура эволюционировала в процессе обучения, поэтому структура может показаться перегруженной.
+* **Археология кода:** Чтобы увидеть реализацию конкретных уроков (от навигации в Decompose до работы с DataStore), придется немного "покопаться" в файлах. Здесь нет стерильной чистоты, зато есть история реальной борьбы с `Unresolved reference`.
 
-### Build and Run Android Application
+###  Где что искать
+* **[commonMain](./composeApp/src/commonMain/kotlin)** — здесь живет вся общая логика. Ищите тут компоненты Decompose, настройки Ktor и сериализацию данных.
+* **[androidMain](./composeApp/src/androidMain/kotlin)** — "сердце" Android-версии, работа с разрешениями, манифестом и точкой входа.
+* **[jvmMain](./composeApp/src/jvmMain/kotlin)** — специфичные штуки для Desktop-версии.
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+### 🛠 Как запустить этот квест
+Если вы решите собрать это локально, убедитесь, что ваш Gradle готов к приключениям:
 
-### Build and Run Desktop (JVM) Application
+**Android:**
+- Windows: `.\gradlew.bat :composeApp:assembleDebug`
+- macOS/Linux: `./gradlew :composeApp:assembleDebug`
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+**Desktop (JVM):**
+- Windows: `.\gradlew.bat :composeApp:run`
+- macOS/Linux: `./gradlew :composeApp:run`
 
 ---
+*Проект построен на энтузиазме, кофе и бесконечных исправлениях импортов.*
 
 Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
