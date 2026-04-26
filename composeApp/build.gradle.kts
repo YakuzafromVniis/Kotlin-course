@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -35,6 +36,9 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(libs.compose.material3.adaptive)
             implementation(compose.materialIconsExtended)
+            implementation(libs.decompose)
+
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
