@@ -44,6 +44,7 @@ kotlin {
             implementation(libs.essenty.lifecycle.coroutines)
             implementation(libs.decompose)
             implementation(libs.decompose.extensions.compose)
+            implementation(libs.dataStore)
 
 
         }
