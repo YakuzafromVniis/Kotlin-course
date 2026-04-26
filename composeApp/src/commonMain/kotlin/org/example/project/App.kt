@@ -11,46 +11,41 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.pluralStringResource
+import shoppingbasket.composeapp.generated.resources.* // Внимательно проверь импорт!
 
-
-data class ShoppingListItem(
-    val description: String,
-    val bought: Boolean = false
-)
+data class ShoppingListItem(val description: String, val bought: Boolean = false)
 
 @Composable
 fun App() {
-
-    val shoppingList = remember {
-        mutableStateListOf(
-            ShoppingListItem("Молоко"),
-            ShoppingListItem("Мука"),
-            ShoppingListItem("Яйца")
-        )
-    }
-
-
+    val shoppingList = remember { mutableStateListOf<ShoppingListItem>() }
     var newItemDesc by remember { mutableStateOf("") }
 
     MaterialTheme {
         Surface(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.fillMaxWidth()) {
+                // ИСПОЛЬЗУЕМ СТРОКУ ИЗ РЕСУРСОВ
                 Text(
-                    text = "Список покупок",
+                    text = stringResource(Res.string.app_title),
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp)
                 )
 
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                // Счётчик с правильными склонениями (штука, штуки, штук)
+                Text(
+                    text = pluralStringResource(Res.plurals.items_count, shoppingList.size, shoppingList.size),
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    style = MaterialTheme.typography.bodyMedium
+                )
 
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
                     item {
                         OutlinedTextField(
                             value = newItemDesc,
                             onValueChange = { newItemDesc = it },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp),
-                            label = { Text("Название продукта") },
+                            modifier = Modifier.fillMaxWidth().padding(16.dp),
+                            label = { Text(stringResource(Res.string.input_label)) }, // РЕСУРС
                             trailingIcon = {
                                 IconButton(onClick = {
                                     if (newItemDesc.isNotBlank()) {
@@ -58,23 +53,17 @@ fun App() {
                                         newItemDesc = ""
                                     }
                                 }) {
-                                    Icon(Icons.Default.Add, contentDescription = "Добавить")
+                                    Icon(Icons.Default.Add, contentDescription = stringResource(Res.string.add_button))
                                 }
                             }
                         )
                     }
 
-
                     itemsIndexed(shoppingList) { index, item ->
                         ShoppingListElement(
                             item = item,
-                            onBoughtChange = { isChecked ->
-
-                                shoppingList[index] = item.copy(bought = isChecked)
-                            },
-                            onDelete = {
-                                shoppingList.removeAt(index)
-                            }
+                            onBoughtChange = { shoppingList[index] = item.copy(bought = it) },
+                            onDelete = { shoppingList.removeAt(index) }
                         )
                     }
                 }
@@ -84,37 +73,15 @@ fun App() {
 }
 
 @Composable
-fun ShoppingListElement(
-    item: ShoppingListItem,
-    onBoughtChange: (Boolean) -> Unit,
-    onDelete: () -> Unit
-) {
+fun ShoppingListElement(item: ShoppingListItem, onBoughtChange: (Boolean) -> Unit, onDelete: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 4.dp)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
-        Checkbox(
-            checked = item.bought,
-            onCheckedChange = onBoughtChange
-        )
-
-
-        Text(
-            text = item.description,
-            modifier = Modifier.weight(1f),
-            style = if (item.bought)
-                MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.outline)
-            else MaterialTheme.typography.bodyLarge
-        )
-
+        Checkbox(checked = item.bought, onCheckedChange = onBoughtChange)
+        Text(text = item.description, modifier = Modifier.weight(1f))
         IconButton(onClick = onDelete) {
-            Icon(
-                imageVector = Icons.Default.Delete,
-                contentDescription = "Удалить",
-                tint = MaterialTheme.colorScheme.error
-            )
+            Icon(Icons.Default.Delete, contentDescription = stringResource(Res.string.delete_desc))
         }
     }
 }
