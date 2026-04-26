@@ -6,24 +6,29 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.arkivanov.decompose.defaultComponentContext
 import org.example.project.component.RootComponentImpl
-import org.example.project.util.InjectionCompanion // Импорт твоего синглтона с HttpClient
+import org.example.project.util.InjectionCompanion
+import org.example.project.AndroidInjectionCompanion // Импорт для DataStore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Делает интерфейс "на весь экран" (под строку состояния)
         enableEdgeToEdge()
 
-        // Создаем "мозги" приложения.
-        // Передаем HttpClient из InjectionCompanion, чтобы интернет работал везде.
+        // 1. Получаем DataStore (настройки), передавая контекст активити
+        val dataStore = AndroidInjectionCompanion.getDataStore(this)
+
+        // 2. Создаем RootComponent и передаем в него ВСЕ зависимости:
+        // - HttpClient (интернет)
+        // - DataStore (настройки)
+        // - ComponentContext (навигация)
         val root = RootComponentImpl(
             httpClient = InjectionCompanion.httpClient,
+            dataStore = dataStore,
             componentContext = defaultComponentContext()
         )
 
         setContent {
-            // Запускаем главный UI и передаем ему наш RootComponent
+            // Запускаем главный UI
             App(root)
         }
     }
