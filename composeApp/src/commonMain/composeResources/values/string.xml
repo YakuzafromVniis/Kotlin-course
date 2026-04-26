@@ -3,6 +3,7 @@
     <string name="input_label">Product Name</string>
     <string name="add_button">Add</string>
     <string name="delete_desc">Delete product</string>
+    <string name="second_screen_error">Произошла ошибка во время загрузки</string>
     <plurals name="items_count">
         <item quantity="one">%1$d item</item>
         <item quantity="other">%1$d items</item>

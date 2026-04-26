@@ -37,6 +37,13 @@ kotlin {
             implementation(libs.compose.material3.adaptive)
             implementation(compose.materialIconsExtended)
             implementation(libs.decompose)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.contentNegotiation)
+            implementation(libs.ktor.serialization.json)
+            implementation(libs.essenty.lifecycle.coroutines)
+            implementation(libs.decompose)
+            implementation(libs.decompose.extensions.compose)
 
 
         }
