@@ -8,31 +8,42 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable // ВАЖНО для сохранения при повороте
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.example.project.ui.theme.getApplicationColorScheme
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.pluralStringResource
-import shoppingbasket.composeapp.generated.resources.* // Внимательно проверь импорт!
-
-data class ShoppingListItem(val description: String, val bought: Boolean = false)
+import shoppingbasket.composeapp.generated.resources.* data class ShoppingListItem(val description: String, val bought: Boolean = false)
 
 @Composable
 fun App() {
-    val shoppingList = remember { mutableStateListOf<ShoppingListItem>() }
-    var newItemDesc by remember { mutableStateOf("") }
 
-    MaterialTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                // ИСПОЛЬЗУЕМ СТРОКУ ИЗ РЕСУРСОВ
+    MaterialTheme(colorScheme = getApplicationColorScheme()) {
+
+
+        Scaffold { contentPadding ->
+
+
+
+
+            val shoppingList = remember { mutableStateListOf<ShoppingListItem>() }
+
+
+            var newItemDesc by rememberSaveable { mutableStateOf("") }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(contentPadding)
+            ) {
                 Text(
                     text = stringResource(Res.string.app_title),
                     style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier.padding(16.dp)
                 )
 
-                // Счётчик с правильными склонениями (штука, штуки, штук)
                 Text(
                     text = pluralStringResource(Res.plurals.items_count, shoppingList.size, shoppingList.size),
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -45,7 +56,7 @@ fun App() {
                             value = newItemDesc,
                             onValueChange = { newItemDesc = it },
                             modifier = Modifier.fillMaxWidth().padding(16.dp),
-                            label = { Text(stringResource(Res.string.input_label)) }, // РЕСУРС
+                            label = { Text(stringResource(Res.string.input_label)) },
                             trailingIcon = {
                                 IconButton(onClick = {
                                     if (newItemDesc.isNotBlank()) {
